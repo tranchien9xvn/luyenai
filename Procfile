@@ -1,0 +1,1 @@
+web: gunicorn luyenai_project.wsgi --log-file -

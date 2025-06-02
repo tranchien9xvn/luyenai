@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chọn Tuần Học - Luyện AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe, #667eea);
+      background-size: 400% 400%;
+      animation: gradientFlow 20s ease infinite;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      color: white;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Enhanced floating particles */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 15% 85%, rgba(255, 255, 255, 0.12) 2px, transparent 2px),
+        radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        radial-gradient(circle at 45% 60%, rgba(245, 158, 11, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 70% 30%, rgba(139, 92, 246, 0.08) 1px, transparent 1px);
+      background-size: 60px 60px, 100px 100px, 80px 80px, 120px 120px;
+      animation: floatParticles 25s infinite linear;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes floatParticles {
+      0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+      33% { transform: translateX(30px) translateY(-30px) rotate(120deg); }
+      66% { transform: translateX(-20px) translateY(20px) rotate(240deg); }
+      100% { transform: translateX(0px) translateY(0px) rotate(360deg); }
+    }
+
+    .glass-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+      border-radius: 2.5rem;
+      backdrop-filter: blur(30px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 0 50px rgba(255, 255, 255, 0.1);
+      padding: 3.5rem;
+      max-width: 900px;
+      margin: 2rem auto;
+      position: relative;
+      z-index: 10;
+      animation: cardFloatGentle 8s ease-in-out infinite;
+    }
+
+    @keyframes cardFloatGentle {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-12px) scale(1.01); }
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 2.5rem;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      animation: shimmerSlow 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes shimmerSlow {
+      0% { transform: translateX(-100%) skewX(-15deg); }
+      100% { transform: translateX(100%) skewX(-15deg); }
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #f59e0b, #d97706, #f59e0b, #fbbf24, #f59e0b);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: textGradientFlow 4s ease-in-out infinite;
+      text-shadow: 0 0 40px rgba(245, 158, 11, 0.4);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      font-size: 2.5rem;
+    }
+
+    @keyframes textGradientFlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2, #8b5cf6);
+      background-size: 200% 200%;
+      color: white;
+      font-weight: 600;
+      padding: 1rem 2.5rem;
+      border-radius: 2rem;
+      box-shadow: 
+        0 15px 35px rgba(102, 126, 234, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      animation: buttonGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes buttonGlow {
+      0%, 100% { box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+      50% { box-shadow: 0 20px 40px rgba(102, 126, 234, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.6s;
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-5px) scale(1.05);
+      background-position: 100% 50%;
+      box-shadow: 
+        0 25px 50px rgba(102, 126, 234, 0.6),
+        0 0 30px rgba(139, 92, 246, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-primary i {
+      margin-right: 0.75rem;
+      font-size: 1.1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .btn-primary:hover i {
+      transform: rotate(180deg) scale(1.2);
+    }
+
+    a.week-card {
+      display: block;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+      border-radius: 1.75rem;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 
+        0 12px 30px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      font-weight: 600;
+      font-size: 1.25rem;
+      text-decoration: none;
+      color: white;
+      border-left: 5px solid transparent;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    a.week-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    a.week-card:hover::before {
+      left: 100%;
+    }
+
+    a.week-card:hover {
+      border-left-color: #f59e0b;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.25),
+        0 0 40px rgba(245, 158, 11, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    a.week-card i {
+      margin-right: 1rem;
+      color: #fbbf24;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    a.week-card:hover i {
+      transform: scale(1.3) rotate(10deg);
+      color: #f59e0b;
+      text-shadow: 0 0 15px rgba(245, 158, 11, 0.6);
+    }
+
+    .no-weeks {
+      text-align: center;
+      color: #fbbf24;
+      font-weight: 600;
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(251, 191, 36, 0.05));
+      padding: 4rem 2rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      backdrop-filter: blur(15px);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .no-weeks i {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      display: block;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .back-link {
+      color: #fbbf24;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(251, 191, 36, 0.05));
+      padding: 1rem 2rem;
+      border-radius: 2rem;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      backdrop-filter: blur(10px);
+      margin-top: 2rem;
+    }
+
+    .back-link:hover {
+      transform: translateY(-5px) scale(1.05);
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.25), rgba(251, 191, 36, 0.1));
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.2),
+        0 0 30px rgba(251, 191, 36, 0.4);
+      text-decoration: none;
+    }
+
+    .back-link i {
+      margin-right: 0.75rem;
+      transition: transform 0.3s ease;
+    }
+
+    .back-link:hover i {
+      transform: translateX(-5px) scale(1.1);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .glass-card {
+        margin: 1rem;
+        padding: 2.5rem 1.5rem;
+      }
+      
+      .gradient-text {
+        font-size: 2rem;
+      }
+      
+      a.week-card {
+        padding: 1.5rem;
+        font-size: 1.125rem;
+      }
+      
+      .btn-primary {
+        padding: 0.875rem 2rem;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .glass-card {
+        padding: 2rem 1rem;
+      }
+      
+      .gradient-text {
+        font-size: 1.75rem;
+      }
+      
+      a.week-card {
+        padding: 1.25rem;
+        font-size: 1rem;
+      }
+      
+      .btn-primary {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+      }
+      
+      .no-weeks i {
+        font-size: 3rem;
+      }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+    }
+
+    /* Enhanced entrance animations */
+    .glass-card {
+      animation: cardFloatGentle 8s ease-in-out infinite, slideIn 1s ease-out;
+    }
+
+    @keyframes slideIn {
+      0% { 
+        opacity: 0; 
+        transform: translateY(50px) scale(0.9); 
+      }
+      100% { 
+        opacity: 1; 
+        transform: translateY(0px) scale(1); 
+      }
+    }
+
+    a.week-card {
+      animation: fadeInUp 0.6s ease-out backwards;
+    }
+
+    a.week-card:nth-child(1) { animation-delay: 0.1s; }
+    a.week-card:nth-child(2) { animation-delay: 0.2s; }
+    a.week-card:nth-child(3) { animation-delay: 0.3s; }
+    a.week-card:nth-child(4) { animation-delay: 0.4s; }
+    a.week-card:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glass-card">
+    <h1 class="gradient-text mb-12 text-center">
+      Chọn Tuần Học
+    </h1>
+
+    <div class="mb-10 text-center">
+      <a href="{% url 'practice:upload_exercise' %}" class="btn-primary max-w-xs">
+        <i class="fas fa-plus"></i> Tạo Bài Tập Mới
+      </a>
+    </div>
+
+    <div>
+      {% if weeks %}
+        {% for week in weeks %}
+          <a href="{% url 'practice:exercise_list' week.number %}" class="week-card">
+            <i class="fas fa-calendar-week"></i>
+            Tuần {{ week.number }}: {{ week.title }}
+          </a>
+        {% endfor %}
+      {% else %}
+        <div class="no-weeks">
+          <i class="fas fa-calendar-times"></i>
+          Chưa có tuần học nào.
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="text-center">
+      <a href="{% url 'main:index' %}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Trở về Trang Chủ
+      </a>
+    </div>
+  </div>
+</body>
+</html>

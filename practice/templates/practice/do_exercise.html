@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ exercise.title }} (Tuần {{ week.number }}) - Luyện AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(-45deg, #1e3a8a, #3730a3, #1e1b4b, #312e81, #1e3a8a);
+      background-size: 400% 400%;
+      animation: gradientFlow 15s ease infinite;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      color: white;
+      padding: 2rem 1rem;
+      position: relative;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Subtle floating particles */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 100px 100px, 150px 150px;
+      animation: floatGentle 30s infinite linear;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes floatGentle {
+      0% { transform: translateX(0px) translateY(0px); }
+      100% { transform: translateX(50px) translateY(-50px); }
+    }
+
+    .glass-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+      border-radius: 2rem;
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      max-width: 900px;
+      margin: 0 auto 3rem;
+      padding: 3rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 2rem;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+      animation: shimmer 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    h1 {
+      font-weight: 900;
+      font-size: 2.5rem;
+      margin-bottom: 2.5rem;
+      text-align: center;
+      background: linear-gradient(90deg, #fbbf24, #f59e0b, #d97706, #fbbf24);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: textGradientFlow 3s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+    }
+
+    @keyframes textGradientFlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    ol {
+      list-style: none;
+      counter-reset: question-counter;
+      margin-bottom: 2.5rem;
+    }
+
+    li {
+      counter-increment: question-counter;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+      border-radius: 1.5rem;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    li:hover {
+      transform: translateY(-3px);
+      box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    li::before {
+      content: counter(question-counter);
+      position: absolute;
+      top: -15px;
+      left: 2rem;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #1e3a8a;
+      font-weight: 900;
+      font-size: 1.25rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(251, 191, 36, 0.4);
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      color: #fbbf24;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.025em;
+    }
+
+    .question-text {
+      margin-bottom: 1.5rem;
+      color: #f1f5f9;
+      font-weight: 600;
+      font-size: 1.125rem;
+      line-height: 1.7;
+      background: linear-gradient(135deg, rgba(241, 245, 249, 0.15), rgba(241, 245, 249, 0.05));
+      padding: 1.5rem;
+      border-radius: 1rem;
+      border-left: 4px solid #fbbf24;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 1.25rem 1.5rem;
+      border-radius: 1rem;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+      color: white;
+      resize: vertical;
+      font-size: 1.125rem;
+      font-weight: 500;
+      line-height: 1.6;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.1);
+      font-family: 'Inter', sans-serif;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #fbbf24;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.15));
+      box-shadow: 
+        0 0 25px rgba(251, 191, 36, 0.4),
+        inset 0 2px 4px rgba(0, 0, 0, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.2);
+      transform: scale(1.01);
+    }
+
+    textarea::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 400;
+    }
+
+    .submit-container {
+      position: relative;
+      text-align: center;
+    }
+
+    button.submit-btn {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed, #a855f7);
+      background-size: 200% 200%;
+      color: white;
+      font-weight: 700;
+      font-size: 1.125rem;
+      padding: 1.25rem 3rem;
+      border-radius: 2rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 
+        0 20px 40px rgba(79, 70, 229, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      animation: buttonPulse 3s ease-in-out infinite;
+      min-width: 200px;
+    }
+
+    @keyframes buttonPulse {
+      0%, 100% { 
+        box-shadow: 0 20px 40px rgba(79, 70, 229, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3); 
+      }
+      50% { 
+        box-shadow: 0 25px 50px rgba(79, 70, 229, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4); 
+      }
+    }
+
+    button.submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.6s;
+    }
+
+    button.submit-btn:hover::before {
+      left: 100%;
+    }
+
+    button.submit-btn:hover {
+      background-position: 100% 50%;
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 
+        0 30px 60px rgba(79, 70, 229, 0.6),
+        0 0 30px rgba(168, 85, 247, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    button.submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    button.submit-btn i {
+      margin-right: 0.75rem;
+      transition: transform 0.3s ease;
+    }
+
+    button.submit-btn:hover i {
+      transform: translateX(5px) scale(1.1);
+    }
+
+    /* Loading Animation */
+    .loading-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid #fbbf24;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: #fbbf24;
+      font-weight: 600;
+      font-size: 1.125rem;
+      text-align: center;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Success Animation */
+    .success-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      text-align: center;
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: white;
+      box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4);
+      animation: successBounce 0.8s ease-out;
+    }
+
+    @keyframes successBounce {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .success-message {
+      color: #10b981;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .success-submessage {
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+      font-size: 1.125rem;
+      max-width: 300px;
+      line-height: 1.5;
+    }
+
+    a.back-link {
+      display: inline-flex;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1));
+      color: #fbbf24;
+      font-weight: 600;
+      font-size: 1.125rem;
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      border-radius: 1.5rem;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    a.back-link:hover {
+      color: #f59e0b;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.3), rgba(251, 191, 36, 0.15));
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 
+        0 15px 30px rgba(0, 0, 0, 0.2),
+        0 0 20px rgba(251, 191, 36, 0.4);
+      text-decoration: none;
+    }
+
+    a.back-link i {
+      margin-right: 0.75rem;
+      transition: transform 0.3s ease;
+    }
+
+    a.back-link:hover i {
+      transform: translateX(-5px) scale(1.1);
+    }
+
+    /* Hidden state */
+    .hidden {
+      display: none !important;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem 0.5rem;
+      }
+      
+      .glass-card {
+        padding: 2rem 1.5rem;
+        max-width: 100%;
+      }
+      
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+      }
+      
+      li {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      textarea {
+        min-height: 100px;
+        padding: 1rem;
+        font-size: 1rem;
+      }
+      
+      button.submit-btn {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        min-width: 180px;
+      }
+      
+      .question-text {
+        padding: 1rem;
+        font-size: 1rem;
+      }
+
+      .success-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+      }
+
+      .success-message {
+        font-size: 1.25rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.75rem;
+      }
+      
+      li {
+        padding: 1.25rem;
+      }
+      
+      li::before {
+        width: 35px;
+        height: 35px;
+        font-size: 1.1rem;
+      }
+      
+      label {
+        font-size: 1.125rem;
+      }
+      
+      textarea {
+        padding: 0.875rem;
+      }
+      
+      button.submit-btn {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.9rem;
+        min-width: 160px;
+      }
+    }
+
+    /* Enhanced entrance animations */
+    .glass-card {
+      animation: slideInUp 1s ease-out;
+    }
+
+    @keyframes slideInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    li {
+      animation: fadeInScale 0.6s ease-out backwards;
+    }
+
+    li:nth-child(1) { animation-delay: 0.1s; }
+    li:nth-child(2) { animation-delay: 0.2s; }
+    li:nth-child(3) { animation-delay: 0.3s; }
+    li:nth-child(4) { animation-delay: 0.4s; }
+    li:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes fadeInScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+  </style>
+</head>
+<body>
+  <div class="glass-card">
+    <h1>{{ exercise.title }} (Tuần {{ week.number }})</h1>
+    <form id="exerciseForm" method="post" novalidate>
+      {% csrf_token %}
+      <ol>
+        {% for q in questions %}
+          <li>
+            <label for="question_{{ q.id }}">Câu hỏi:</label>
+            <div class="question-text">{{ q.text }}</div>
+            <textarea id="question_{{ q.id }}" name="question_{{ q.id }}" required placeholder="Nhập câu trả lời của bạn ở đây..." spellcheck="false"></textarea>
+          </li>
+        {% endfor %}
+      </ol>
+      
+      <div class="submit-container">
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <i class="fas fa-paper-plane"></i> Nộp bài
+        </button>
+        
+        <!-- Loading Animation -->
+        <div class="loading-container" id="loadingContainer">
+          <div class="loading-spinner"></div>
+          <div class="loading-text" id="loadingText">Đang xử lý bài tập...</div>
+        </div>
+        
+        <!-- Success Animation -->
+        <div class="success-container" id="successContainer">
+          <div class="success-icon">
+            <i class="fas fa-check"></i>
+          </div>
+          <div class="success-message">Chúc mừng! 🎉</div>
+          <div class="success-submessage">Bài tập của bạn đã được nộp thành công. Cảm ơn bạn đã hoàn thành!</div>
+        </div>
+      </div>
+    </form>
+    
+    <a href="{% url 'practice:exercise_list' week.number %}" class="back-link">
+      <i class="fas fa-arrow-left"></i> Quay lại danh sách bài tập
+    </a>
+  </div>
+
+  <script>
+    document.getElementById('exerciseForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitBtn');
+      const loadingContainer = document.getElementById('loadingContainer');
+      const successContainer = document.getElementById('successContainer');
+      const loadingText = document.getElementById('loadingText');
+      
+      // Hide submit button and show loading
+      submitBtn.style.display = 'none';
+      loadingContainer.style.display = 'flex';
+      
+      // Loading messages
+      const loadingMessages = [
+        'Đang xử lý bài tập...',
+        'Đang phân tích câu trả lời...',
+        'Gần hoàn thành rồi...'
+      ];
+      
+      let messageIndex = 0;
+      const messageInterval = setInterval(() => {
+        messageIndex = (messageIndex + 1) % loadingMessages.length;
+        loadingText.textContent = loadingMessages[messageIndex];
+      }, 1000);
+      
+      // Show success after 3 seconds
+      setTimeout(() => {
+        clearInterval(messageInterval);
+        loadingContainer.style.display = 'none';
+        successContainer.style.display = 'flex';
+        
+        // Actually submit the form in background after showing success
+        setTimeout(() => {
+          this.submit();
+        }, 500);
+      }, 3000);
+    });
+
+    // Validate form before submission
+    function validateForm() {
+      const textareas = document.querySelectorAll('textarea[required]');
+      let isValid = true;
+      
+      textareas.forEach(textarea => {
+        if (textarea.value.trim() === '') {
+          textarea.style.borderColor = '#ef4444';
+          textarea.style.boxShadow = '0 0 20px rgba(239, 68, 68, 0.4)';
+          isValid = false;
+        } else {
+          textarea.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+          textarea.style.boxShadow = 'inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1)';
+        }
+      });
+      
+      return isValid;
+    }
+
+    // Real-time validation
+    document.querySelectorAll('textarea').forEach(textarea => {
+      textarea.addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+          this.style.borderColor = '#10b981';
+          this.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.3)';
+        } else {
+          this.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+          this.style.boxShadow = 'inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1)';
+        }
+      });
+    });
+
+    // Add submit validation
+    document.getElementById('exerciseForm').addEventListener('submit', function(e) {
+      if (!validateForm()) {
+        e.preventDefault();
+        alert('Vui lòng điền đầy đủ tất cả câu trả lời trước khi nộp bài!');
+        return false;
+      }
+    });
+  </script>
+</body>
+</html>
