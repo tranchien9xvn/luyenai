@@ -30,9 +30,10 @@ SECRET_KEY = 'django-insecure-b2@s8qzym3mk%-m&hm9wjql#3#p1@3c11#_e6y-wffjlb*fm@l
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['host=luyenaiproject-782d32d9259b.herokuapp.com', '127.0.0.1', 'localhost']
-# Sau khi có domain tùy chỉnh, thêm vào đây: 'yourcustomdomain.com'
+#ALLOWED_HOSTS = ['host=luyenaiproject-782d32d9259b.herokuapp.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['luyenaiproject-782d32d9259b.herokuapp.com', '127.0.0.1', 'localhost']
 
+# Sau khi có domain tùy chỉnh, thêm vào đây: 'yourcustomdomain.com'
 
 # Application definition
 
